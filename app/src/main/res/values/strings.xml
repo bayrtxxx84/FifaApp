@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">Test</string>
+    <string name="app_title">FIFA offcial app</string>
+    <string name="btn_login">Iniciar</string>
+    <string name="label">Iniciar</string>
+    <string name="userName">Nombre de usuario</string>
+    <string name="password">Password</string>
+</resources>
