@@ -10,7 +10,7 @@
 
     <color name="base_text">#000000</color>
     <color name="red_label">#d62828</color>
-    <color name="buttons">#FFE500</color>
+    <color name="buttons">#7C0E06</color>
     <color name="textInputLayoutBg">#20E6E5E5</color>
     <color name="textInputLayoutStroke">#FF9800</color>
 </resources>

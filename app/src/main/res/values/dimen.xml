@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="text_button">22sp</dimen>
-    <dimen name="text_login">32sp</dimen>
+    <dimen name="text_login">42sp</dimen>
     <dimen name="text_default">12sp</dimen>
     <dimen name="padding_button">15dp</dimen>
     <dimen name="margin_text">15dp</dimen>
