@@ -1,6 +1,7 @@
 package com.example.test
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
@@ -19,7 +20,7 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        //initClass()
+        initClass()
 
     }
 
@@ -36,11 +37,22 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun initClass() {
-        val txt = binding.txtPass
+        val txt = binding.txtUser
         binding.buttonLogin.setOnClickListener {
-            Snackbar.make(txt, txt.text.toString(), Snackbar.LENGTH_SHORT)
+            val txtUser = binding.txtUser.text.toString()
+            val txtPass = binding.txtPass.text.toString()
+
+            if (txtUser == ("admin") && txtPass == "admin") {
+                var intent = Intent(this, PrincipalActivity::class.java)
+                intent.putExtra(Variables.nombreUsuario, "Bienvenidos")
+                startActivity(intent)
+            }
+
+            Snackbar.make(txt, "Nombre de usuario o contraseña incorrectos", Snackbar.LENGTH_SHORT)
                 .show()
         }
+
+
     }
 
 
