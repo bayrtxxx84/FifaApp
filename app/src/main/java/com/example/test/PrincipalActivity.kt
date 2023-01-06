@@ -1,12 +1,21 @@
 package com.example.test
 
+import android.annotation.SuppressLint
 import android.content.ActivityNotFoundException
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
+import android.view.ContextMenu
+import android.view.MenuInflater
+import android.view.MenuItem
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.PackageManagerCompat
+import androidx.fragment.app.Fragment
 import com.example.test.databinding.ActivityPrincipalBinding
-import java.net.URI
+import com.google.android.material.snackbar.Snackbar
+
 
 class PrincipalActivity : AppCompatActivity() {
 
@@ -18,36 +27,104 @@ class PrincipalActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         initActivity()
-        googleSearch()
-        openGoogleMaps()
-        shareText()
 
+        binding.apply { registerForContextMenu(binding.txtTitle) }
+
+        binding.bottomNavigation.setOnItemSelectedListener { item ->
+            when (item.itemId) {
+                R.id.search -> {
+                    googleSearch()
+                    true
+                }
+                R.id.map -> {
+                    openGoogleMaps()
+                    true
+                }
+                R.id.share -> {
+                    shareText()
+                    true
+                }
+                R.id.fragment -> {
+                    fragmentVisibility(FragmentArgentino())
+                    true
+                }
+
+                R.id.fragment1 -> {
+                    fragmentVisibility(FragmentFrancia())
+                    true
+                }
+                else -> false
+            }
+        }
 
     }
 
-    private fun shareText() {
-        binding.btnShare.setOnClickListener {
-            val sendIntent: Intent = Intent().apply {
-                action = Intent.ACTION_SEND
-                putExtra(Intent.EXTRA_TEXT, "This is my text to send.")
-                type = "text/plain"
+    // Menu contextual
+    override fun onCreateContextMenu(
+        menu: ContextMenu, v: View,
+        menuInfo: ContextMenu.ContextMenuInfo?
+    ) {
+        super.onCreateContextMenu(menu, v, menuInfo)
+        val inflater: MenuInflater = menuInflater
+        inflater.inflate(R.menu.contextual_menu, menu)
+    }
+
+    // Menu contextual
+    override fun onContextItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.map_1 -> {
+                openGoogleMaps()
+                true
             }
-
-            val shareIntent = Intent.createChooser(sendIntent, null)
-            startActivity(shareIntent)
+            R.id.search_1 -> {
+                Snackbar.make(binding.txtTitle, "Opcion busqueda", Snackbar.LENGTH_SHORT)
+                    .show()
+                true
+            }
+            R.id.share_1 -> {
+                Snackbar.make(binding.txtTitle, "Opcion compartir", Snackbar.LENGTH_SHORT)
+                    .show()
+                true
+            }
+            else -> super.onContextItemSelected(item)
         }
+    }
 
+    // Manejo de fragmentos
+    private fun fragmentVisibility(fragment: Fragment) {
+        val fragmentManager = supportFragmentManager
+        val fragmentTransaction = fragmentManager.beginTransaction()
+        fragmentTransaction.replace(binding.FragmentPrincipal.id, fragment)
+        fragmentTransaction.addToBackStack(null)
+        fragmentTransaction.commit()
+    }
+
+    // Menu de compartir
+    private fun shareText() {
+        val sendIntent: Intent = Intent().apply {
+            action = Intent.ACTION_SEND
+            putExtra(Intent.EXTRA_TEXT, binding.txtQuery.text.toString())
+            type = "text/plain"
+        }
+        val shareIntent = Intent.createChooser(sendIntent, null)
+        startActivity(shareIntent)
     }
 
     // Chequea si el paquete esta instalado en el dispositivo
     private fun checkPackage(namePackage: String): Boolean {
-        val intent = packageManager.getLaunchIntentForPackage(namePackage)
-        var ret = true
-        if (intent == null) {
-            ret = false
+
+        try {
+            this.packageManager.getApplicationInfo(
+                namePackage,
+                PackageManager.GET_META_DATA
+            )
+
+        } catch (e: PackageManager.NameNotFoundException) {
+
         }
-        return ret
+        return true
     }
+
 
     // Abre la play store para la instalacion de la aplicacion solicitada
     private fun openPlayStore(namePackage: String) {
@@ -68,48 +145,50 @@ class PrincipalActivity : AppCompatActivity() {
         }
     }
 
+    // Abre google maps
     private fun openGoogleMaps() {
+        val namePackage = "com.google.android.apps.maps"
+        if (checkPackage(namePackage)) {
+            // Create a Uri from an intent string. Use the result to create an Intent.
+            // Street view
+            //val gmmIntentUri = Uri.parse("google.streetview:cbll=-0.2032731,-78.5008713")
+            val location = Uri.parse("geo: 46.414382, 10.013988")
 
-        binding.btnMap.setOnClickListener {
-            val namePackage = "com.google.android.apps.maps"
-            val check = checkPackage(namePackage)
-            if (check) {
-                // Create a Uri from an intent string. Use the result to create an Intent.
-                // Street view
-                //val gmmIntentUri = Uri.parse("google.streetview:cbll=-0.2032731,-78.5008713")
-                val gmmIntentUri = Uri.parse("geo:-0.2032731,-78.5008713")
+            // Create an Intent from gmmIntentUri. Set the action to ACTION_VIEW
+            val mapIntent = Intent(Intent.ACTION_VIEW, location)
 
-                // Create an Intent from gmmIntentUri. Set the action to ACTION_VIEW
-                val mapIntent = Intent(Intent.ACTION_VIEW, gmmIntentUri)
+            // Make the Intent explicit by setting the Google Maps package
+            mapIntent.setPackage(namePackage)
 
-                // Make the Intent explicit by setting the Google Maps package
-                mapIntent.setPackage(namePackage)
-
-                // Attempt to start an activity that can handle the Intent
+            // Attempt to start an activity that can handle the Intent
+            try {
                 startActivity(mapIntent)
-            } else {
-                openPlayStore(namePackage)
+            } catch (e: ActivityNotFoundException) {
+                Snackbar.make(
+                    binding.txtTitle,
+                    "Aplicación no encontrada",
+                    Snackbar.LENGTH_SHORT
+                )
+                    .show()
             }
+        } else {
+            openPlayStore(namePackage)
         }
     }
 
+    // Abre la busqueda de google
     private fun googleSearch() {
-
-        binding.btnQuery.setOnClickListener {
-
-            val namePackage = "com.google.android.googlequicksearchbox"
-            val check = checkPackage(namePackage)
-            if (check) {
-                var intent = Intent(Intent.ACTION_WEB_SEARCH)
-                intent.setClassName(
-                    namePackage,
-                    "com.google.android.googlequicksearchbox.SearchActivity"
-                )
-                intent.putExtra("query", binding.editText.text.toString());
-                startActivity(intent)
-            } else {
-                openPlayStore(namePackage)
-            }
+        val namePackage = "com.google.android.googlequicksearchbox"
+        if (checkPackage(namePackage)) {
+            var intent = Intent(Intent.ACTION_WEB_SEARCH)
+            intent.setClassName(
+                namePackage,
+                "com.google.android.googlequicksearchbox.SearchActivity"
+            )
+            intent.putExtra("query", binding.txtQuery.text.toString());
+            startActivity(intent)
+        } else {
+            openPlayStore(namePackage)
         }
     }
 
@@ -119,7 +198,7 @@ class PrincipalActivity : AppCompatActivity() {
                 Variables.nombreUsuario,
                 "No hay dato"
             ).toString()
-            binding.txtTitle.text = saludo
+            //binding.txtTitle.text = "saludo"
         }
 
         val saludo = intent.extras?.getString(

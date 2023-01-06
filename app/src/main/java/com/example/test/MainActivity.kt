@@ -48,12 +48,10 @@ class MainActivity : AppCompatActivity() {
                 startActivity(intent)
             }
 
-            Snackbar.make(txt, "Nombre de usuario o contraseña incorrectos", Snackbar.LENGTH_SHORT)
-                .show()
+            Snackbar.make(
+                txt, "Nombre de usuario o contraseña incorrectos",
+                Snackbar.LENGTH_SHORT
+            ).show()
         }
-
-
     }
-
-
 }
