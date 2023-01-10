@@ -9,6 +9,9 @@
     <string name="query">Consultar</string>
     <string name="map">Abrir mapa</string>
     <string name="share">Compartir</string>
+
     <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="fragment_1">Francia</string>
+    <string name="fragment_2">Argentina</string>
+
 </resources>

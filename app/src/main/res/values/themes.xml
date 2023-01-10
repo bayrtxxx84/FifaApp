@@ -24,4 +24,5 @@ a
         <item name="android:paddingRight">@dimen/padding_button</item>
     </style>
 
+
 </resources>

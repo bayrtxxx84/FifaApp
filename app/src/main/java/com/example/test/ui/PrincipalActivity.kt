@@ -1,18 +1,19 @@
-package com.example.test
+package com.example.test.ui
 
-import android.annotation.SuppressLint
 import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.ContextMenu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.PackageManagerCompat
 import androidx.fragment.app.Fragment
+import com.example.test.R
+import com.example.test.utils.Variables
 import com.example.test.databinding.ActivityPrincipalBinding
 import com.google.android.material.snackbar.Snackbar
 
@@ -27,36 +28,9 @@ class PrincipalActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         initActivity()
+        initClicks()
 
         binding.apply { registerForContextMenu(binding.txtTitle) }
-
-        binding.bottomNavigation.setOnItemSelectedListener { item ->
-            when (item.itemId) {
-                R.id.search -> {
-                    googleSearch()
-                    true
-                }
-                R.id.map -> {
-                    openGoogleMaps()
-                    true
-                }
-                R.id.share -> {
-                    shareText()
-                    true
-                }
-                R.id.fragment -> {
-                    fragmentVisibility(FragmentArgentino())
-                    true
-                }
-
-                R.id.fragment1 -> {
-                    fragmentVisibility(FragmentFrancia())
-                    true
-                }
-                else -> false
-            }
-        }
-
     }
 
     // Menu contextual
@@ -77,17 +51,37 @@ class PrincipalActivity : AppCompatActivity() {
                 true
             }
             R.id.search_1 -> {
-                Snackbar.make(binding.txtTitle, "Opcion busqueda", Snackbar.LENGTH_SHORT)
-                    .show()
+                googleSearch()
                 true
             }
             R.id.share_1 -> {
-                Snackbar.make(binding.txtTitle, "Opcion compartir", Snackbar.LENGTH_SHORT)
-                    .show()
+                shareText()
                 true
             }
             else -> super.onContextItemSelected(item)
         }
+    }
+
+    private fun initClicks() {
+        binding.btnMap.setOnClickListener { openGoogleMaps() }
+        binding.btnShare.setOnClickListener { shareText() }
+        binding.btnQuery.setOnClickListener { googleSearch() }
+
+        binding.bottomNavigation.setOnItemSelectedListener { item ->
+            when (item.itemId) {
+                R.id.fragment -> {
+                    fragmentVisibility(FragmentArgentino())
+                    true
+                }
+
+                R.id.fragment1 -> {
+                    fragmentVisibility(FragmentFrancia())
+                    true
+                }
+                else -> false
+            }
+        }
+
     }
 
     // Manejo de fragmentos
@@ -112,15 +106,13 @@ class PrincipalActivity : AppCompatActivity() {
 
     // Chequea si el paquete esta instalado en el dispositivo
     private fun checkPackage(namePackage: String): Boolean {
-
         try {
             this.packageManager.getApplicationInfo(
                 namePackage,
                 PackageManager.GET_META_DATA
             )
-
         } catch (e: PackageManager.NameNotFoundException) {
-
+            Log.e("error", "Package {$namePackage} not found")
         }
         return true
     }
@@ -152,7 +144,7 @@ class PrincipalActivity : AppCompatActivity() {
             // Create a Uri from an intent string. Use the result to create an Intent.
             // Street view
             //val gmmIntentUri = Uri.parse("google.streetview:cbll=-0.2032731,-78.5008713")
-            val location = Uri.parse("geo: 46.414382, 10.013988")
+            val location = Uri.parse("geo:0,0?q=" + binding.txtQuery.text.toString())
 
             // Create an Intent from gmmIntentUri. Set the action to ACTION_VIEW
             val mapIntent = Intent(Intent.ACTION_VIEW, location)
@@ -180,7 +172,7 @@ class PrincipalActivity : AppCompatActivity() {
     private fun googleSearch() {
         val namePackage = "com.google.android.googlequicksearchbox"
         if (checkPackage(namePackage)) {
-            var intent = Intent(Intent.ACTION_WEB_SEARCH)
+            val intent = Intent(Intent.ACTION_WEB_SEARCH)
             intent.setClassName(
                 namePackage,
                 "com.google.android.googlequicksearchbox.SearchActivity"
@@ -194,18 +186,15 @@ class PrincipalActivity : AppCompatActivity() {
 
     private fun initActivity() {
         intent.extras?.let {
-            val saludo = it.getString(
-                Variables.nombreUsuario,
-                "No hay dato"
+            val session = it.getString(
+                Variables.uuidSession, ""
             ).toString()
-            //binding.txtTitle.text = "saludo"
+            if (session == "") {
+                finish()
+            } else {
+                Log.d("Audit", "Session is valid")
+            }
         }
-
-        val saludo = intent.extras?.getString(
-            Variables.nombreUsuario,
-            "No hay dato"
-        ).toString()
-
     }
 
 

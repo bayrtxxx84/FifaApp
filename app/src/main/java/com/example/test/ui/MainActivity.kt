@@ -1,14 +1,13 @@
-package com.example.test
+package com.example.test.ui
 
 import android.annotation.SuppressLint
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.Button
-import android.widget.TextView
-import android.widget.Toast
+import com.example.test.utils.Variables
 import com.example.test.databinding.ActivityMainBinding
 import com.google.android.material.snackbar.Snackbar
+import java.util.UUID
 
 class MainActivity : AppCompatActivity() {
 
@@ -24,7 +23,6 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-
     override fun onPause() {
         super.onPause()
         println("PAUSANDO APP")
@@ -37,21 +35,23 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun initClass() {
-        val txt = binding.txtUser
+
         binding.buttonLogin.setOnClickListener {
             val txtUser = binding.txtUser.text.toString()
             val txtPass = binding.txtPass.text.toString()
 
             if (txtUser == ("admin") && txtPass == "admin") {
-                var intent = Intent(this, PrincipalActivity::class.java)
-                intent.putExtra(Variables.nombreUsuario, "Bienvenidos")
+                val uuid: UUID = UUID(15635, 12756)
+                val intent = Intent(this, PrincipalActivity::class.java)
+                intent.putExtra(Variables.uuidSession, uuid.toString())
                 startActivity(intent)
             }
 
             Snackbar.make(
-                txt, "Nombre de usuario o contraseña incorrectos",
+                binding.txtUser, "Nombre de usuario o contraseña incorrectos",
                 Snackbar.LENGTH_SHORT
             ).show()
         }
+
     }
 }

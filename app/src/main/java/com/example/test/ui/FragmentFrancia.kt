@@ -1,4 +1,4 @@
-package com.example.test
+package com.example.test.ui
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.example.test.databinding.FragmentFranciaBinding
+import com.example.test.userCase.teams.TeamsUC
 
 
 class FragmentFrancia : Fragment() {
@@ -20,7 +21,10 @@ private lateinit var binding : FragmentFranciaBinding
         return binding.root
     }
 
-
+    override fun onStart() {
+        val c = TeamsUC().getInfoTeam("ec")
+        super.onStart()
+    }
 
 
 }

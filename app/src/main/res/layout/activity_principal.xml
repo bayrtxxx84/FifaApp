@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".PrincipalActivity">
+    tools:context=".ui.PrincipalActivity">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/layoutUpper"
@@ -22,54 +22,59 @@
             android:id="@+id/txtQuery"
             android:layout_width="match_parent"
             android:layout_height="52dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginRight="42dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="42dp"
+            android:hint="Ingrese el texto"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.39"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:ignore="SpeakableTextPresentCheck" />
+            tools:ignore="LabelFor,SpeakableTextPresentCheck" />
 
         <ImageView
             android:id="@+id/txtTitle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
             android:layout_marginTop="28dp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.647"
             app:layout_constraintStart_toEndOf="@+id/txtQuery"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/ic_more_vert_24" />
+            app:srcCompat="@drawable/ic_menu_open_24" />
 
-        <com.google.android.material.chip.ChipGroup
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:singleSelection="true"
-            app:selectionRequired="true"
-            app:layout_constraintEnd_toEndOf="parent"
+        <Button
+            android:id="@+id/btnShare"
+            android:layout_width="wrap_content"
+            android:layout_height="42dp"
+            android:layout_margin="8dp"
+            android:layout_marginStart="12dp"
+            android:text="@string/share"
+
+            app:cornerRadius="7dp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/txtQuery">
+            app:layout_constraintTop_toBottomOf="@+id/txtQuery" />
 
-            <com.google.android.material.chip.Chip
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                style="@style/Widget.MaterialComponents.Chip.Choice"
-                android:text="Mapa" />
+        <Button
+            android:id="@+id/btnMap"
+            android:layout_width="wrap_content"
+            android:layout_height="42dp"
+            android:layout_margin="8dp"
+            android:text="@string/map"
+            app:cornerRadius="7dp"
+            app:layout_constraintStart_toEndOf="@+id/btnShare"
+            app:layout_constraintTop_toBottomOf="@+id/txtQuery" />
 
-            <com.google.android.material.chip.Chip
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                style="@style/Widget.MaterialComponents.Chip.Choice"
-                android:text="Búsqueda" />
+        <Button
+            android:id="@+id/btnQuery"
+            android:layout_width="wrap_content"
+            android:layout_height="42dp"
+            android:layout_margin="8dp"
+            android:text="@string/query"
+            app:cornerRadius="7dp"
+            app:layout_constraintStart_toEndOf="@+id/btnMap"
+            app:layout_constraintTop_toBottomOf="@+id/txtQuery" />
 
-            <com.google.android.material.chip.Chip
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                style="@style/Widget.MaterialComponents.Chip.Choice"
-                android:text="Compartir" />
-
-        </com.google.android.material.chip.ChipGroup>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

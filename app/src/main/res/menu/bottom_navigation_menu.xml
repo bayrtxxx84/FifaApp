@@ -2,25 +2,12 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/search"
-        android:icon="@drawable/ic_search_24"
-        android:title="@string/query" />
-    <item
-        android:id="@+id/map"
-        android:icon="@drawable/ic_location_searching_24"
-        android:title="@string/map" />
-    <item
-        android:id="@+id/share"
-        android:icon="@drawable/ic_share_24"
-        android:title="@string/share" />
-
-    <item
         android:id="@+id/fragment"
         android:icon="@drawable/ic_360_24"
-        android:title="@string/share" />
+        android:title="@string/fragment_1" />
 
     <item
         android:id="@+id/fragment1"
         android:icon="@drawable/ic_360_24"
-        android:title="@string/share" />
+        android:title="@string/fragment_2" />
 </menu>
