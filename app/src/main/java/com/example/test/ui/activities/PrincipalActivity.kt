@@ -1,11 +1,10 @@
-package com.example.test.ui
+package com.example.test.ui.activities
 
 import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import android.view.ContextMenu
 import android.view.MenuInflater
 import android.view.MenuItem
@@ -15,6 +14,8 @@ import androidx.fragment.app.Fragment
 import com.example.test.R
 import com.example.test.utils.Variables
 import com.example.test.databinding.ActivityPrincipalBinding
+import com.example.test.ui.fragments.FragmentArgentina
+import com.example.test.ui.fragments.FragmentFrancia
 import com.google.android.material.snackbar.Snackbar
 
 
@@ -31,6 +32,8 @@ class PrincipalActivity : AppCompatActivity() {
         initClicks()
 
         binding.apply { registerForContextMenu(binding.txtTitle) }
+
+
     }
 
     // Menu contextual
@@ -69,13 +72,13 @@ class PrincipalActivity : AppCompatActivity() {
 
         binding.bottomNavigation.setOnItemSelectedListener { item ->
             when (item.itemId) {
-                R.id.fragment -> {
-                    fragmentVisibility(FragmentArgentino())
+                R.id.idFrancia -> {
+                    fragmentVisibility(FragmentFrancia())
                     true
                 }
 
-                R.id.fragment1 -> {
-                    fragmentVisibility(FragmentFrancia())
+                R.id.idArgentina -> {
+                    fragmentVisibility(FragmentArgentina())
                     true
                 }
                 else -> false
@@ -106,13 +109,15 @@ class PrincipalActivity : AppCompatActivity() {
 
     // Chequea si el paquete esta instalado en el dispositivo
     private fun checkPackage(namePackage: String): Boolean {
+
         try {
             this.packageManager.getApplicationInfo(
                 namePackage,
                 PackageManager.GET_META_DATA
             )
+
         } catch (e: PackageManager.NameNotFoundException) {
-            Log.e("error", "Package {$namePackage} not found")
+
         }
         return true
     }
@@ -147,7 +152,7 @@ class PrincipalActivity : AppCompatActivity() {
             val location = Uri.parse("geo:0,0?q=" + binding.txtQuery.text.toString())
 
             // Create an Intent from gmmIntentUri. Set the action to ACTION_VIEW
-            val mapIntent = Intent(Intent.ACTION_VIEW, location)
+            var mapIntent = Intent(Intent.ACTION_VIEW, location)
 
             // Make the Intent explicit by setting the Google Maps package
             mapIntent.setPackage(namePackage)
@@ -186,15 +191,18 @@ class PrincipalActivity : AppCompatActivity() {
 
     private fun initActivity() {
         intent.extras?.let {
-            val session = it.getString(
-                Variables.uuidSession, ""
+            val saludo = it.getString(
+                Variables.nombreUsuario,
+                "No hay dato"
             ).toString()
-            if (session == "") {
-                finish()
-            } else {
-                Log.d("Audit", "Session is valid")
-            }
+            //binding.txtTitle.text = "saludo"
         }
+
+        val saludo = intent.extras?.getString(
+            Variables.nombreUsuario,
+            "No hay dato"
+        ).toString()
+
     }
 
 

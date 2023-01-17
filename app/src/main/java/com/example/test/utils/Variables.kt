@@ -2,6 +2,6 @@ package com.example.test.utils
 
 object Variables {
 
-    const val uuidSession = "uuidSession"
+    const val nombreUsuario = "saludo"
 
 }

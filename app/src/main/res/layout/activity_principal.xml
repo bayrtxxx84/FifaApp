@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".ui.PrincipalActivity">
+    tools:context=".ui.activities.PrincipalActivity">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/layoutUpper"
@@ -35,10 +35,10 @@
             android:id="@+id/txtTitle"
             android:layout_width="32dp"
             android:layout_height="32dp"
-            android:layout_marginTop="28dp"
+            android:layout_marginTop="16dp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.647"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toEndOf="@+id/txtQuery"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/ic_menu_open_24" />

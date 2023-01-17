@@ -2,12 +2,12 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/fragment"
+        android:id="@+id/idArgentina"
         android:icon="@drawable/ic_360_24"
-        android:title="@string/fragment_1" />
+        android:title="@string/fragment_argentina" />
 
     <item
-        android:id="@+id/fragment1"
+        android:id="@+id/idFrancia"
         android:icon="@drawable/ic_360_24"
-        android:title="@string/fragment_2" />
+        android:title="@string/fragment_francia" />
 </menu>
