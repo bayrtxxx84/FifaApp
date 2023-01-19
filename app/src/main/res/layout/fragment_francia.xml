@@ -21,5 +21,15 @@
         android:layout_height="wrap_content"
         app:srcCompat="@drawable/francia" />
 
+    <SearchView
+        android:id="@+id/searchCountriesRV"
+        android:layout_width="match_parent"
+        android:layout_height="42dp"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/listCountriesRV"
+        android:layout_width="match_parent"
+        android:layout_height="240dp"/>
+
 
 </LinearLayout>
