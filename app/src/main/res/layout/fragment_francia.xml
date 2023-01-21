@@ -16,20 +16,22 @@
         android:text="Fragment frances"
         android:textSize="26sp" />
 
-    <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:srcCompat="@drawable/francia" />
-
     <SearchView
         android:id="@+id/searchCountriesRV"
         android:layout_width="match_parent"
-        android:layout_height="42dp"/>
+        android:layout_height="42dp"
+        android:layout_marginTop="24dp" />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/listCountriesRV"
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/swipeRv"
         android:layout_width="match_parent"
-        android:layout_height="240dp"/>
+        android:layout_height="260dp">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/listCountriesRV"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
 
 </LinearLayout>

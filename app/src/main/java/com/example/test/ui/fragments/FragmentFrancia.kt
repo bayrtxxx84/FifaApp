@@ -9,10 +9,12 @@ import android.view.ViewGroup
 import android.widget.SearchView
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.test.databinding.FragmentFranciaBinding
 import com.example.test.model.entities.api.Countries
 import com.example.test.ui.adapters.UserAdapter
 import com.example.test.userCase.teams.TeamsUC
+import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
@@ -39,19 +41,39 @@ class FragmentFrancia : Fragment() {
     @SuppressLint("NotifyDataSetChanged")
     private fun loadCountries() {
 
+        val listCountriesAux = ArrayList<Countries>()
+
         lifecycleScope.launch {
             val c = TeamsUC().getInfoTeam("bra")
             if (c != null) {
-                listCountries.add(c)
+                listCountriesAux.add(c)
             }
             val c1 = TeamsUC().getInfoTeam("ecu")
             if (c1 != null) {
-                listCountries.add(c1)
+                listCountriesAux.add(c1)
             }
             val c2 = TeamsUC().getInfoTeam("ger")
             if (c2 != null) {
-                listCountries.add(c2)
+                listCountriesAux.add(c2)
             }
+
+            val c3 = TeamsUC().getInfoTeam("arg")
+            if (c3 != null) {
+                listCountriesAux.add(c3)
+            }
+
+            val c4 = TeamsUC().getInfoTeam("pr")
+            if (c4 != null) {
+                listCountriesAux.add(c4)
+            }
+
+            val c5 = TeamsUC().getInfoTeam("fra")
+            if (c5 != null) {
+                listCountriesAux.add(c5)
+            }
+
+            listCountriesAux.shuffle()
+            listCountries.addAll(listCountriesAux)
 
             adapter.dataList = listCountries
             binding.listCountriesRV.adapter = adapter
@@ -85,5 +107,24 @@ class FragmentFrancia : Fragment() {
             adapter.notifyDataSetChanged()
             true
         }
+
+        binding.swipeRv.setOnRefreshListener {
+            listCountries.clear()
+            Snackbar.make(
+                binding.swipeRv,
+                "Se ha recargado la lista", Snackbar.LENGTH_SHORT
+            ).show()
+            loadCountries()
+            binding.swipeRv.isRefreshing = false
+        }
+
+        binding.listCountriesRV.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                if (!recyclerView.canScrollVertically(1)) {
+                    loadCountries()
+                }
+            }
+        })
+
     }
 }
