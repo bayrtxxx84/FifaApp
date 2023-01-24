@@ -20,8 +20,21 @@ class MainActivity : AppCompatActivity() {
 
         initClass()
 
+        //println(suma(5, 2))
+        println("El resultado es: " + myFun(5, 2, suma ))
+        println("El resultado es: " + myFun(5, 2, { x, y -> x + y } ))
+
     }
 
+    val suma = fun(a: Int, b: Int): Int {
+        return a + b
+    }
+
+    fun myFun(a: Int, b: Int, param: (Int, Int) -> Int): Int {
+        val d = a + 1
+        val e = b - 2
+        return param(d, e)
+    }
 
     override fun onPause() {
         super.onPause()

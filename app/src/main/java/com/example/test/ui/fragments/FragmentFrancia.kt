@@ -17,13 +17,24 @@ import com.example.test.userCase.teams.TeamsUC
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 
 class FragmentFrancia : Fragment() {
 
     private lateinit var binding: FragmentFranciaBinding
     private val listCountries = ArrayList<Countries>()
-    private val adapter = UserAdapter()
+    private val adapter = UserAdapter { country -> clickOnItem(country) }
+
+
+    private fun clickOnItem(item: Countries) {
+        Snackbar.make(
+            binding.swipeRv,
+            "Usted a seleccionado : ${item.alternateName}",
+            Snackbar.LENGTH_LONG
+        ).show()
+    }
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -35,53 +46,62 @@ class FragmentFrancia : Fragment() {
 
     override fun onStart() {
         super.onStart()
+        initComponents()
+
         loadCountries()
+    }
+
+    private fun initComponents() {
+        adapter.dataList = listCountries
+        binding.listCountriesRV.adapter = adapter
+        binding.listCountriesRV.layoutManager = LinearLayoutManager(
+            activity?.baseContext,
+            LinearLayoutManager.VERTICAL,
+            false
+        )
     }
 
     @SuppressLint("NotifyDataSetChanged")
     private fun loadCountries() {
 
-        val listCountriesAux = ArrayList<Countries>()
+        lifecycleScope.launch(Dispatchers.Main) {
 
-        lifecycleScope.launch {
-            val c = TeamsUC().getInfoTeam("bra")
-            if (c != null) {
-                listCountriesAux.add(c)
-            }
-            val c1 = TeamsUC().getInfoTeam("ecu")
-            if (c1 != null) {
-                listCountriesAux.add(c1)
-            }
-            val c2 = TeamsUC().getInfoTeam("ger")
-            if (c2 != null) {
-                listCountriesAux.add(c2)
+            val listCountriesAux = withContext(Dispatchers.IO) {
+                val listCountriesAux = ArrayList<Countries>()
+                val c = TeamsUC().getInfoTeam("bra")
+                if (c != null) {
+                    listCountriesAux.add(c)
+                }
+                val c1 = TeamsUC().getInfoTeam("ecu")
+                if (c1 != null) {
+                    listCountriesAux.add(c1)
+                }
+                val c2 = TeamsUC().getInfoTeam("ger")
+                if (c2 != null) {
+                    listCountriesAux.add(c2)
+                }
+
+                val c3 = TeamsUC().getInfoTeam("arg")
+                if (c3 != null) {
+                    listCountriesAux.add(c3)
+                }
+
+                val c4 = TeamsUC().getInfoTeam("pr")
+                if (c4 != null) {
+                    listCountriesAux.add(c4)
+                }
+
+                val c5 = TeamsUC().getInfoTeam("fra")
+                if (c5 != null) {
+                    listCountriesAux.add(c5)
+                }
+                listCountriesAux.shuffle()
+                listCountriesAux
             }
 
-            val c3 = TeamsUC().getInfoTeam("arg")
-            if (c3 != null) {
-                listCountriesAux.add(c3)
-            }
-
-            val c4 = TeamsUC().getInfoTeam("pr")
-            if (c4 != null) {
-                listCountriesAux.add(c4)
-            }
-
-            val c5 = TeamsUC().getInfoTeam("fra")
-            if (c5 != null) {
-                listCountriesAux.add(c5)
-            }
-
-            listCountriesAux.shuffle()
             listCountries.addAll(listCountriesAux)
-
             adapter.dataList = listCountries
-            binding.listCountriesRV.adapter = adapter
-            binding.listCountriesRV.layoutManager = LinearLayoutManager(
-                activity?.baseContext,
-                LinearLayoutManager.VERTICAL,
-                false
-            )
+            adapter.notifyDataSetChanged()
         }
 
 
@@ -110,10 +130,6 @@ class FragmentFrancia : Fragment() {
 
         binding.swipeRv.setOnRefreshListener {
             listCountries.clear()
-            Snackbar.make(
-                binding.swipeRv,
-                "Se ha recargado la lista", Snackbar.LENGTH_SHORT
-            ).show()
             loadCountries()
             binding.swipeRv.isRefreshing = false
         }
@@ -125,6 +141,7 @@ class FragmentFrancia : Fragment() {
                 }
             }
         })
+
 
     }
 }

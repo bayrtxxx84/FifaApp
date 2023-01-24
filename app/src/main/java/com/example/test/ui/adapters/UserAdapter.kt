@@ -11,7 +11,8 @@ import com.example.test.model.entities.api.Countries
 import com.google.android.material.snackbar.Snackbar
 import com.squareup.picasso.Picasso
 
-class UserAdapter() :
+class UserAdapter(private val itemClick: (Countries) -> Unit) :
+
     RecyclerView.Adapter<UserAdapter.UserViewHolder>() {
 
     var dataList: List<Countries> = emptyList()
@@ -20,13 +21,15 @@ class UserAdapter() :
 
         private var binding: CountriesRvBinding = CountriesRvBinding.bind(view)
 
-        fun render(item: Countries) {
+        fun render(item: Countries, itemClick: (Countries) -> Unit) {
             binding.txtV1.text = item.alternateName
             binding.txtV2.text = item.country
             Picasso.get().load("https://countryflagsapi.com/png/" + item.alternateName)
                 .into(binding.countryImage);
+            itemView.setOnClickListener {
+                itemClick(item)
+            }
         }
-
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): UserViewHolder {
@@ -35,7 +38,7 @@ class UserAdapter() :
     }
 
     override fun onBindViewHolder(holder: UserViewHolder, position: Int) {
-        holder.render(dataList[position])
+        holder.render(dataList[position], itemClick)
     }
 
     override fun getItemCount(): Int = dataList.size
