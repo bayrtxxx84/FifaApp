@@ -11,11 +11,10 @@ import com.example.test.model.entities.api.Countries
 import com.google.android.material.snackbar.Snackbar
 import com.squareup.picasso.Picasso
 
-class UserAdapter(private val itemClick: (Countries) -> Unit) :
-
-    RecyclerView.Adapter<UserAdapter.UserViewHolder>() {
+class UserAdapter() : RecyclerView.Adapter<UserAdapter.UserViewHolder>() {
 
     var dataList: List<Countries> = emptyList()
+    lateinit var itemClick: (Countries) -> Unit
 
     class UserViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 

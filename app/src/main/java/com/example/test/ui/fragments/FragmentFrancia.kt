@@ -1,6 +1,7 @@
 package com.example.test.ui.fragments
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -12,9 +13,11 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.test.databinding.FragmentFranciaBinding
 import com.example.test.model.entities.api.Countries
+import com.example.test.ui.activities.ShowInfoCountry
 import com.example.test.ui.adapters.UserAdapter
 import com.example.test.userCase.teams.TeamsUC
 import com.google.android.material.snackbar.Snackbar
+import com.google.gson.Gson
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -24,16 +27,7 @@ class FragmentFrancia : Fragment() {
 
     private lateinit var binding: FragmentFranciaBinding
     private val listCountries = ArrayList<Countries>()
-    private val adapter = UserAdapter { country -> clickOnItem(country) }
-
-
-    private fun clickOnItem(item: Countries) {
-        Snackbar.make(
-            binding.swipeRv,
-            "Usted a seleccionado : ${item.alternateName}",
-            Snackbar.LENGTH_LONG
-        ).show()
-    }
+    private val adapter = UserAdapter()
 
 
     override fun onCreateView(
@@ -46,12 +40,27 @@ class FragmentFrancia : Fragment() {
 
     override fun onStart() {
         super.onStart()
-        initComponents()
+        initRecyclerview()
 
         loadCountries()
     }
 
-    private fun initComponents() {
+    @SuppressLint("NotifyDataSetChanged")
+    private fun initRecyclerview() {
+
+
+
+        val itemClick = fun(item: Countries) {
+            val toShowInfo = Intent(activity?.baseContext,
+                ShowInfoCountry::class.java)
+            val json = Gson().toJson(item)
+            toShowInfo.putExtra("item", json)
+            startActivity(toShowInfo)
+
+        }
+
+        //
+        adapter.itemClick = itemClick
         adapter.dataList = listCountries
         binding.listCountriesRV.adapter = adapter
         binding.listCountriesRV.layoutManager = LinearLayoutManager(
@@ -59,6 +68,44 @@ class FragmentFrancia : Fragment() {
             LinearLayoutManager.VERTICAL,
             false
         )
+
+        //
+        binding.searchCountriesRV.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            @SuppressLint("NotifyDataSetChanged")
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                val filter = listCountries.filter {
+                    it.alternateName.lowercase() == query?.lowercase()
+                }
+                adapter.dataList = filter
+                adapter.notifyDataSetChanged()
+                return true
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                return true
+            }
+
+        })
+
+        binding.searchCountriesRV.setOnCloseListener {
+            adapter.dataList = listCountries
+            adapter.notifyDataSetChanged()
+            true
+        }
+
+        binding.swipeRv.setOnRefreshListener {
+            listCountries.clear()
+            loadCountries()
+            binding.swipeRv.isRefreshing = false
+        }
+
+        binding.listCountriesRV.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                if (!recyclerView.canScrollVertically(1)) {
+                    loadCountries()
+                }
+            }
+        })
     }
 
     @SuppressLint("NotifyDataSetChanged")
@@ -103,45 +150,5 @@ class FragmentFrancia : Fragment() {
             adapter.dataList = listCountries
             adapter.notifyDataSetChanged()
         }
-
-
-        binding.searchCountriesRV.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-            @SuppressLint("NotifyDataSetChanged")
-            override fun onQueryTextSubmit(query: String?): Boolean {
-                val filter = listCountries.filter {
-                    it.alternateName.lowercase() == query?.lowercase()
-                }
-                adapter.dataList = filter
-                adapter.notifyDataSetChanged()
-                return true
-            }
-
-            override fun onQueryTextChange(newText: String?): Boolean {
-                return true
-            }
-
-        })
-
-        binding.searchCountriesRV.setOnCloseListener {
-            adapter.dataList = listCountries
-            adapter.notifyDataSetChanged()
-            true
-        }
-
-        binding.swipeRv.setOnRefreshListener {
-            listCountries.clear()
-            loadCountries()
-            binding.swipeRv.isRefreshing = false
-        }
-
-        binding.listCountriesRV.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                if (!recyclerView.canScrollVertically(1)) {
-                    loadCountries()
-                }
-            }
-        })
-
-
     }
 }
