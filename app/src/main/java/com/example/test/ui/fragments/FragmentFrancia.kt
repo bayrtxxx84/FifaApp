@@ -12,11 +12,10 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.test.databinding.FragmentFranciaBinding
-import com.example.test.model.entities.api.Countries
+import com.example.test.model.entities.api.countries.Countries
 import com.example.test.ui.activities.ShowInfoCountry
 import com.example.test.ui.adapters.UserAdapter
 import com.example.test.userCase.teams.TeamsUC
-import com.google.android.material.snackbar.Snackbar
 import com.google.gson.Gson
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch

@@ -2,9 +2,8 @@ package com.example.test.ui.activities
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.LayoutInflater
 import com.example.test.databinding.ActivityShowInfoCountryBinding
-import com.example.test.model.entities.api.Countries
+import com.example.test.model.entities.api.countries.Countries
 import com.google.gson.Gson
 import com.squareup.picasso.Picasso
 

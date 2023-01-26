@@ -3,12 +3,10 @@ package com.example.test.ui.adapters
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.example.test.R
 import com.example.test.databinding.CountriesRvBinding
-import com.example.test.model.entities.api.Countries
-import com.google.android.material.snackbar.Snackbar
+import com.example.test.model.entities.api.countries.Countries
 import com.squareup.picasso.Picasso
 
 class UserAdapter() : RecyclerView.Adapter<UserAdapter.UserViewHolder>() {

@@ -4,9 +4,15 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
+import androidx.lifecycle.lifecycleScope
 import com.example.test.databinding.ActivityMainBinding
+import com.example.test.userCase.oauth2.Oauth2UC
+import com.example.test.userCase.pets.PetsUC
 import com.example.test.utils.Variables
 import com.google.android.material.snackbar.Snackbar
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity() {
 
@@ -17,23 +23,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
         initClass()
-
-        //println(suma(5, 2))
-        println("El resultado es: " + myFun(5, 2, suma ))
-        println("El resultado es: " + myFun(5, 2, { x, y -> x + y } ))
-
-    }
-
-    val suma = fun(a: Int, b: Int): Int {
-        return a + b
-    }
-
-    fun myFun(a: Int, b: Int, param: (Int, Int) -> Int): Int {
-        val d = a + 1
-        val e = b - 2
-        return param(d, e)
     }
 
     override fun onPause() {
@@ -57,12 +47,34 @@ class MainActivity : AppCompatActivity() {
                 var intent = Intent(this, PrincipalActivity::class.java)
                 intent.putExtra(Variables.nombreUsuario, "Bienvenidos")
                 startActivity(intent)
+            } else {
+                Snackbar.make(
+                    txt, "Nombre de usuario o contraseña incorrectos",
+                    Snackbar.LENGTH_SHORT
+                ).show()
             }
+        }
+    }
 
-            Snackbar.make(
-                txt, "Nombre de usuario o contraseña incorrectos",
-                Snackbar.LENGTH_SHORT
-            ).show()
+    private fun testToken() {
+        lifecycleScope.launch(Dispatchers.IO)
+        {
+            try {
+                Log.d("UCE", "Ejecutando el Token")
+                val c = Oauth2UC().getTokenPets()
+
+                Log.d("UCE", "Ejecutando la consulta")
+                if (c != null) {
+                    val r = PetsUC().getAllPets(
+                        1,
+                        "dog",
+                        "${c.token_type} ${c.access_token}"
+                    )
+                    Log.d("UCE", "Resultados totales son: ${r?.size}")
+                }
+            } catch (e: Exception) {
+                Snackbar.make(binding.imageView, e.message.toString(), Snackbar.LENGTH_LONG).show()
+            }
         }
     }
 }

@@ -1,4 +1,4 @@
-package com.example.test.model.entities.api
+package com.example.test.model.entities.api.countries
 
 data class Countries(
     val alternateName: String = "",
