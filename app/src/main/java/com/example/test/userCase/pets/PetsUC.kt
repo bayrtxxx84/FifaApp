@@ -1,7 +1,7 @@
 package com.example.test.userCase.pets
 
 import com.example.test.model.endpoints.PetsEndPoint
-import com.example.test.model.entities.api.pets.Animal
+import com.example.test.model.entities.api.adoption.Animal
 import com.example.test.model.repositories.APIRepository
 
 class PetsUC {

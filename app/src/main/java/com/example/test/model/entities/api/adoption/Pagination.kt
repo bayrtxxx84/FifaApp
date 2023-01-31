@@ -1,6 +1,6 @@
-package com.example.test.model.entities.api.pets
+package com.example.test.model.entities.api.adoption
 
-import com.example.test.model.entities.api.pets.generated.LinksX
+import com.example.test.model.entities.api.adoption.generated.LinksX
 
 data class Pagination(
     val _links: LinksX,

@@ -1,8 +1,6 @@
-package com.example.test.model.entities.api.pets
+package com.example.test.model.entities.api.adoption
 
-import com.example.test.model.entities.api.pets.generated.*
-import com.example.test.model.entities.pets.generated.*
-import com.example.test.userCase.pets.pets.generated.*
+import com.example.test.model.entities.api.adoption.generated.*
 
 data class Animal(
     val _links: Links,

@@ -1,4 +1,4 @@
-package com.example.test.model.entities.api.pets
+package com.example.test.model.entities.api.adoption
 
 data class PetsResponse(
     val animals: List<Animal>,

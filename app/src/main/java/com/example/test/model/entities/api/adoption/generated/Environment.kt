@@ -1,4 +1,4 @@
-package com.example.test.model.entities.api.pets.generated
+package com.example.test.model.entities.api.adoption.generated
 
 data class Environment(
     val cats: Any,

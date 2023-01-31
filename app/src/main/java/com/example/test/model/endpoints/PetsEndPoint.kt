@@ -1,15 +1,12 @@
 package com.example.test.model.endpoints
 
-import com.example.test.model.entities.api.oauth.PetsToken
-import com.example.test.model.entities.api.oauth.PetsTokenBody
-import com.example.test.model.entities.api.pets.PetsResponse
+import com.example.test.model.entities.api.adoption.PetsResponse
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.Headers
 import retrofit2.http.POST
-import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface PetsEndPoint {
