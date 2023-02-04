@@ -13,7 +13,6 @@ import com.example.test.model.entities.database.CountriesDB
     exportSchema = false
 )
 abstract class DBCountriesRepository : RoomDatabase() {
-
     abstract fun getCountriesDao(): CountriesDAO
 
 }

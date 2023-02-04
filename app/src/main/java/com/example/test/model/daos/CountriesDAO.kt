@@ -10,8 +10,11 @@ interface CountriesDAO {
     @Query("select * from CountriesDB")
     fun getAllCountries() : List<CountriesDB>
 
-    @Query("select * from CountriesDB where id = :idTabla")
-    fun getOneCountry(idTabla : Int) : CountriesDB
+    @Query("select * from CountriesDB where idApi = :idApi")
+    fun getOneCountry(idApi : String) : CountriesDB
+
+    @Query("select * from CountriesDB where id = :id")
+    fun getOneCountryID(id : Int) : CountriesDB
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertCountry(c : CountriesDB)

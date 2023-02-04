@@ -18,7 +18,7 @@ class Test : Application() {
         private val dbCon: DBCountriesRepository? = null
 
         @SuppressLint("StaticFieldLeak")
-        var context: Context? = null
+        private var context: Context? = null
 
         fun getConn(): DBCountriesRepository {
             return dbCon ?: return DBCountriesConnection().getConnection(context!!)
