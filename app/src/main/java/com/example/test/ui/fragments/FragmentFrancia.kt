@@ -47,8 +47,6 @@ class FragmentFrancia : Fragment() {
     @SuppressLint("NotifyDataSetChanged")
     private fun initRecyclerview() {
 
-
-
         val itemClick = fun(item: Countries) {
             val toShowInfo = Intent(activity?.baseContext,
                 ShowInfoCountry::class.java)
@@ -148,6 +146,7 @@ class FragmentFrancia : Fragment() {
             listCountries.addAll(listCountriesAux)
             adapter.dataList = listCountries
             adapter.notifyDataSetChanged()
+            binding.progressBar.visibility = View.GONE
         }
     }
 }

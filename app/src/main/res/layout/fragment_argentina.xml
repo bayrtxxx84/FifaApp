@@ -7,7 +7,6 @@
     tools:context=".ui.fragments.FragmentArgentina"
     android:orientation="vertical">
 
-    <!-- TODO: Update blank fragment layout -->
     <TextView
         android:id="@+id/txtNombre"
         android:layout_width="match_parent"

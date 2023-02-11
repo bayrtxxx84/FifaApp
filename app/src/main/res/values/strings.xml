@@ -9,7 +9,7 @@
     <string name="query">Consultar</string>
     <string name="map">Abrir mapa</string>
     <string name="share">Compartir</string>
-    <!-- TODO: Remove or change this placeholder text -->
+
     <string name="fragment_francia">Francia</string>
     <string name="fragment_argentina">Argentina</string>
 </resources>
