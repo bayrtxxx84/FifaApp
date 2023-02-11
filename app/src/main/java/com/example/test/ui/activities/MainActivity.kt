@@ -1,15 +1,19 @@
 package com.example.test.ui.activities
 
+import android.Manifest.permission.*
 import android.annotation.SuppressLint
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import androidx.annotation.RequiresApi
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
 import com.example.test.databinding.ActivityMainBinding
 import com.example.test.userCase.oauth2.Oauth2UC
 import com.example.test.userCase.pets.PetsUC
-import com.example.test.utils.Test
 import com.example.test.utils.Variables
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.Dispatchers
@@ -19,12 +23,20 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
 
+    private val lstPerms =
+        arrayOf(
+            READ_CONTACTS,
+            ACCESS_FINE_LOCATION,
+            ACCESS_COARSE_LOCATION
+        )
+
     @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         initClass()
+        requestPermissions()
     }
 
     override fun onPause() {
@@ -75,6 +87,57 @@ class MainActivity : AppCompatActivity() {
                 }
             } catch (e: Exception) {
                 Snackbar.make(binding.imageView, e.message.toString(), Snackbar.LENGTH_LONG).show()
+            }
+        }
+    }
+
+    private fun requestPermissions() {
+        lstPerms.forEach {
+            when {
+                ContextCompat.checkSelfPermission(this, it)
+                        == PackageManager.PERMISSION_GRANTED -> {
+                    Snackbar.make(
+                        binding.imageView,
+                        "Los permisos ya fueron asignados",
+                        Snackbar.LENGTH_LONG
+                    ).show()
+                }
+
+                shouldShowRequestPermissionRationale(it) -> {
+                    Snackbar.make(
+                        binding.imageView,
+                        "Los permisos ya fueron asignados",
+                        Snackbar.LENGTH_LONG
+                    ).show()
+                }
+                else -> {
+                    requestPermissions(lstPerms, 100)
+                }
+            }
+        }
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        when (requestCode) {
+            100 -> {
+                if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    Snackbar.make(
+                        binding.imageView,
+                        "Gracias usuario por conceder los permisos",
+                        Snackbar.LENGTH_LONG
+                    ).show()
+                } else {
+                    Snackbar.make(
+                        binding.imageView,
+                        "Los permisos fueron rechazados",
+                        Snackbar.LENGTH_LONG
+                    ).show()
+                }
             }
         }
     }

@@ -6,6 +6,17 @@
     android:layout_height="match_parent"
     tools:context=".ui.activities.ShowInfoCountry">
 
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/btnMic"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
+        android:clickable="true"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnSave"
+        app:srcCompat="@drawable/ic_mic_24" />
+
     <ImageView
         android:id="@+id/imgFlag"
         android:layout_width="match_parent"

@@ -1,8 +1,11 @@
 package com.example.test.ui.activities
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.speech.RecognizerIntent
 import android.util.Log
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.lifecycle.lifecycleScope
 import com.example.test.R
 import com.example.test.databinding.ActivityShowInfoCountryBinding
@@ -10,11 +13,13 @@ import com.example.test.model.entities.api.countries.Countries
 import com.example.test.model.entities.database.CountriesDB
 import com.example.test.userCase.teams.TeamsUC
 import com.example.test.utils.Test
+import com.google.android.material.snackbar.Snackbar
 import com.google.gson.Gson
 import com.squareup.picasso.Picasso
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.util.Locale
 
 class ShowInfoCountry : AppCompatActivity() {
 
@@ -49,6 +54,41 @@ class ShowInfoCountry : AppCompatActivity() {
 
         binding.btnSave.setOnClickListener {
             saveItem()
+        }
+
+        val getContent =
+            registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { resultado ->
+
+                if (resultado.resultCode == RESULT_OK) {
+                    val mes =
+                        resultado.data?.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS)
+                            ?.get(0)
+                    if (!mes.isNullOrEmpty()) {
+                        val searchIntent = Intent(Intent.ACTION_WEB_SEARCH)
+                        searchIntent.setClassName(
+                            "com.google.android.googlequicksearchbox",
+                            "com.google.android.googlequicksearchbox.SearchActivity"
+                        )
+                        searchIntent.putExtra("query", mes)
+                        startActivity(searchIntent)
+                    }
+                } else {
+                    Snackbar.make(binding.imgFlag, "Ocurrio un error", Snackbar.LENGTH_LONG).show()
+                }
+            }
+
+        binding.btnMic.setOnClickListener {
+            val intent = Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH)
+            intent.putExtra(
+                RecognizerIntent.EXTRA_LANGUAGE_MODEL,
+                RecognizerIntent.LANGUAGE_MODEL_FREE_FORM
+            )
+            intent.putExtra(
+                RecognizerIntent.EXTRA_LANGUAGE,
+                Locale.getDefault()
+            )
+            intent.putExtra(RecognizerIntent.EXTRA_PROMPT, "¿En que puedo ayudarte?")
+            getContent.launch(intent)
         }
 
     }
