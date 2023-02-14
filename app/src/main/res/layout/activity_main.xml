@@ -32,61 +32,78 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_marginTop="60dp"
         android:layout_marginLeft="45dp"
+        android:layout_marginTop="60dp"
         android:layout_marginRight="45dp"
+        android:orientation="vertical"
         app:layout_constraintTop_toBottomOf="@+id/cardLogo">
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/textField"
-            style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense"
+        <LinearLayout
+            android:visibility="gone"
+            android:id="@+id/lytLogin"
+            android:orientation="vertical"
             android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/textField"
+                style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/userName"
+                app:boxBackgroundColor="@color/textInputLayoutBg"
+                app:boxCornerRadiusBottomEnd="14dp"
+                app:boxCornerRadiusBottomStart="14dp"
+                app:boxStrokeColor="@color/textInputLayoutStroke"
+                app:startIconDrawable="@drawable/user_circle_24">
+
+                <EditText
+                    android:id="@+id/txtUser"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/edittext_height"
+                    android:layout_margin="@dimen/margin_text" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/textField1"
+                style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense"
+                android:layout_width="match_parent"
+                android:layout_height="82dp"
+                android:hint="@string/password"
+                app:boxBackgroundColor="@color/textInputLayoutBg"
+                app:boxStrokeColor="@color/textInputLayoutStroke"
+                app:endIconMode="password_toggle"
+                app:startIconDrawable="@drawable/password_24">
+
+                <EditText
+                    android:id="@+id/txtPass"
+                    android:layout_width="match_parent"
+                    android:layout_height="62dp"
+                    android:layout_marginLeft="@dimen/margin_text"
+                    android:layout_marginRight="@dimen/margin_text"
+                    android:inputType="textPassword" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <Button
+                android:id="@+id/buttonLogin"
+                style="@style/Test.Button"
+                android:layout_width="138dp"
+                android:layout_height="54dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="32dp"
+                android:text="@string/btn_login"
+                app:cornerRadius="10dp"
+                tools:ignore="TextContrastCheck" />
+
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/imgFinger"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:hint="@string/userName"
-            app:boxCornerRadiusBottomEnd="14dp"
-            app:boxCornerRadiusBottomStart="14dp"
-            app:boxBackgroundColor="@color/textInputLayoutBg"
-            app:boxStrokeColor="@color/textInputLayoutStroke"
-            app:startIconDrawable="@drawable/user_circle_24">
-
-            <EditText
-                android:id="@+id/txtUser"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/edittext_height"
-                android:layout_margin="@dimen/margin_text" />
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/textField1"
-            style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense"
-            android:layout_width="match_parent"
-            android:layout_height="82dp"
-            android:hint="@string/password"
-            app:boxBackgroundColor="@color/textInputLayoutBg"
-            app:boxStrokeColor="@color/textInputLayoutStroke"
-            app:endIconMode="password_toggle"
-            app:startIconDrawable="@drawable/password_24">
-
-            <EditText
-                android:id="@+id/txtPass"
-                android:layout_width="match_parent"
-                android:layout_height="62dp"
-                android:layout_marginLeft="@dimen/margin_text"
-                android:layout_marginRight="@dimen/margin_text"
-                android:inputType="textPassword" />
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <Button
-            android:id="@+id/buttonLogin"
-            style="@style/Test.Button"
-            android:layout_width="138dp"
-            android:layout_height="54dp"
-            app:cornerRadius="10dp"
             android:layout_gravity="center"
-            android:layout_marginTop="32dp"
-            android:text="@string/btn_login"
-            tools:ignore="TextContrastCheck" />
+            android:layout_margin="15dp"
+            android:src="@drawable/ic_fingerprint_24" />
     </LinearLayout>
 
     <TextView

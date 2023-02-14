@@ -34,6 +34,7 @@ class PrincipalActivity : AppCompatActivity() {
         binding.apply { registerForContextMenu(binding.txtTitle) }
 
 
+
     }
 
     // Menu contextual
