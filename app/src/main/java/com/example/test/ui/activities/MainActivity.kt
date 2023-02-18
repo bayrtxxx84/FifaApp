@@ -3,15 +3,13 @@ package com.example.test.ui.activities
 import android.Manifest.permission.*
 import android.content.Context
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
-import android.provider.Settings
 import android.util.Log
 import android.view.View
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
-import androidx.biometric.BiometricManager
-import androidx.biometric.BiometricManager.Authenticators.BIOMETRIC_STRONG
-import androidx.biometric.BiometricManager.Authenticators.DEVICE_CREDENTIAL
 import androidx.biometric.BiometricPrompt
 import androidx.core.content.ContextCompat
 import androidx.datastore.preferences.core.booleanPreferencesKey
@@ -36,7 +34,6 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private lateinit var biometricPrompt: BiometricPrompt
     private lateinit var biometricPromtInfo: BiometricPrompt.PromptInfo
-
     private val Context.datastore by preferencesDataStore("testDB")
 
     private val lstPerms =
@@ -116,7 +113,8 @@ class MainActivity : AppCompatActivity() {
                 val executor = ContextCompat.getMainExecutor(this)
                 val biometricPromtInfo = ManageBiometrics.biometricPrompt(this@MainActivity)
                 biometricPrompt =
-                    BiometricPrompt(this, executor,
+                    androidx.biometric.BiometricPrompt(this, executor,
+                        @RequiresApi(Build.VERSION_CODES.P)
                         object : BiometricPrompt.AuthenticationCallback() {
                             override fun onAuthenticationError(
                                 errorCode: Int, errString: CharSequence
